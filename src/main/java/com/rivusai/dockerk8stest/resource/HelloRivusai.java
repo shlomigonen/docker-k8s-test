@@ -10,6 +10,6 @@ public class HelloRivusai {
 
     @GetMapping
     public String hello () {
-        return "Hello from rivus.ai";
+        return "Hello from Rivus.ai - your Streaming AL Platform";
     }
 }
