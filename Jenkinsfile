@@ -25,7 +25,6 @@ pipeline {
                 docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
 
                     def customImage = docker.build("shlomigonen/docker_k8s_test_container:${env.BUILD_ID}")
-
                     // Push the container to the custom Registry
                     customImage.push()
                 }
