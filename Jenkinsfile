@@ -1,4 +1,10 @@
 pipeline {
+    environment {
+    registry = "shlomigonen/docker_k8s_test_container"
+    registryCredential = 'dockerhub'
+    registryURL = 'https://registry.hub.docker.com'
+    }
+
     agent any
 
     stages {
@@ -14,19 +20,27 @@ pipeline {
                 // Run Maven on a Unix agent.
                 echo 'Building..'
                 sh "mvn package -Dmaven.test.skip=true"
+                // sh "mvn clean package"
              }
         }
-        stage('Dockerize') {
+        stage('Create Docker Container') {
+            steps{
+                script {
+                dockerContainer = docker.build registry
+                }
+            }
+        }
+        stage('Push Container to Dockerhub') {
             steps {
-                echo 'Create and Push Docker Container..'
-                // Create Docker image.
-                // 1st parameter is the docker registry url
-                // 2nd parameter is the name of the credentials defined in Jenkins for my docker hub account
-                docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
+                echo 'Push Docker Container to Dockerhub..'
 
-                    def customImage = docker.build("shlomigonen/docker_k8s_test_container:${env.BUILD_ID}")
-                    // Push the container to the custom Registry
-                    customImage.push()
+                script {
+                    // Login to a registry. Dockerhub is the default and does not need a URL
+                    docker.withRegistry(registryURL, registryCredential ) {
+                        dockerContainer.push("${env.BUILD_NUMBER}")
+                        // Push another container with latest label
+                        dockerContainer.push("latest")
+                    }
                 }
             }
         }
