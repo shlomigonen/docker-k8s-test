@@ -10,14 +10,14 @@ pipeline {
     agent any
 
     stages {
-        stage('Pull') {
+        stage('Pull latest Code') {
              steps {
                 // Get some code from a GitHub repository
                 echo 'Pulling latest code..'
                 git branch: 'master', credentialsId: repositoryCredentials, url: repository
              }
         }
-        stage('Build') {
+        stage('Build Code') {
              steps {
                 // Run Maven on a Unix agent.
                 echo 'Building..'
@@ -32,7 +32,7 @@ pipeline {
                 }
             }
         }
-        stage('Push Container to Dockerhub') {
+        stage('Push Container to Registry') {
             steps {
                 echo 'Push Docker Container to Dockerhub..'
 
