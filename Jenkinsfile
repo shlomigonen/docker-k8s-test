@@ -70,6 +70,7 @@ pipeline {
                     withCredentials([kubeconfigContent( configs: '/home/ubuntu/docker_k8s_test_deployment.yaml',
                                                         credentialsId: clusterCredentials)]) {
                         sh '''echo "$KUBECONFIG_CONTENT" > kubeconfig && cat kubeconfig && rm kubeconfig'''
+
                     }
 
             }
