@@ -53,12 +53,12 @@ pipeline {
             steps{
                 echo 'Deploy on Kubernetes cluster..'
                 sshagent([clusterCredentials]) {
-                    sh "scp -o StrictHostKeyChecking=no docker_k8s_test_deployment.yaml ubuntu@i172.31.6.178"
+                    sh "scp -o StrictHostKeyChecking=no docker_k8s_test_deployment.yaml ubuntu@172.31.6.178"
                     script {
                         try {
-                            sh "ssh ubuntu@i172.31.6.178 kubectl apply -f ."
+                            sh "ssh ubuntu@172.31.6.178 kubectl apply -f ."
                         } catch(error){
-                            sh "ssh ubuntu@i172.31.6.178 kubectl create -f ."
+                            sh "ssh ubuntu@172.31.6.178 kubectl create -f ."
                         }
                     }
                 }
