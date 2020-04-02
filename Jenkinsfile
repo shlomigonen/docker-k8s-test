@@ -3,6 +3,8 @@ pipeline {
     registry = "shlomigonen/docker_k8s_test_container"
     registryCredential = 'dockerhub'
     registryURL = 'https://registry.hub.docker.com'
+    repository = 'https://github.com/shlomigonen/docker-k8s-test.git'
+    repositoryCredentials = 'Github'
     }
 
     agent any
@@ -12,7 +14,7 @@ pipeline {
              steps {
                 // Get some code from a GitHub repository
                 echo 'Pulling latest code..'
-                git 'https://github.com/shlomigonen/docker-k8s-test.git'
+                git branch: 'master', credentialsId: repositoryCredentials, url: repository
              }
         }
         stage('Build') {
