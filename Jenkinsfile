@@ -5,6 +5,8 @@ pipeline {
     registryURL = 'https://registry.hub.docker.com'
     repository = 'https://github.com/shlomigonen/docker-k8s-test.git'
     repositoryCredentials = 'Github'
+    clusterCredentials = 'K8SMaster'
+    clusterDeployFile = "docker_k8s_test_deployment.yaml"
     }
 
     agent any
@@ -28,6 +30,7 @@ pipeline {
         stage('Create Docker Container') {
             steps{
                 script {
+                echo 'Create the Docker Container..'
                 dockerContainer = docker.build registry
                 }
             }
@@ -42,6 +45,21 @@ pipeline {
                         dockerContainer.push("${env.BUILD_NUMBER}")
                         // Push another container with latest label
                         dockerContainer.push("latest")
+                    }
+                }
+            }
+        }
+        stage('Deploy to K8S cluster') {
+            steps{
+                echo 'Deploy on Kubernetes cluster..'
+                sshagent([clusterCredentials]) {
+                    sh "scp -o StrictHostKeyChecking=no docker_k8s_test_deployment.yaml ubuntu@i172.31.6.178"
+                    script {
+                        try {
+                            sh "ssh ubuntu@i172.31.6.178 kubectl apply -f ."
+                        } catch(error){
+                            sh "ssh ubuntu@i172.31.6.178 kubectl create -f ."
+                        }
                     }
                 }
             }
