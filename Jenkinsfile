@@ -52,16 +52,26 @@ pipeline {
         stage('Deploy to K8S cluster') {
             steps{
                 echo 'Deploy on Kubernetes cluster..'
-                sshagent([clusterCredentials]) {
-                    sh "scp -o StrictHostKeyChecking=no docker_k8s_test_deployment.yaml ubuntu@172.31.6.178"
-                    script {
-                        try {
-                            sh "ssh ubuntu@172.31.6.178 kubectl apply -f ."
-                        } catch(error){
-                            sh "ssh ubuntu@172.31.6.178 kubectl create -f ."
-                        }
+//                 sshagent([clusterCredentials]) {
+//                     sh "scp -o StrictHostKeyChecking=no docker_k8s_test_deployment.yaml ubuntu@172.31.6.178"
+//                     script {
+//                         try {
+//                             sh "ssh ubuntu@172.31.6.178 kubectl apply -f ."
+//                         } catch(error){
+//                             sh "ssh ubuntu@172.31.6.178 kubectl create -f ."
+//                         }
+//                     }
+//                 }
+//                     kubernetesDeploy    configs: '/home/ubuntu/docker_k8s_test_deployment.yaml',
+//                                         kubeconfigId: 'K8SMaster',
+//                                         ssh: [sshCredentialsId: '*', sshServer: ''],
+//                                         textCredentials: [certificateAuthorityData: '', clientCertificateData: '', clientKeyData: '', serverUrl: 'https://']
+
+                    withCredentials([kubeconfigContent( configs: '/home/ubuntu/docker_k8s_test_deployment.yaml',
+                                                        credentialsId: clusterCredentials)]) {
+                        sh '''echo "$KUBECONFIG_CONTENT" > kubeconfig && cat kubeconfig && rm kubeconfig'''
                     }
-                }
+
             }
         }
    }
