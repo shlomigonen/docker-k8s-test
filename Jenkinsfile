@@ -51,7 +51,9 @@ pipeline {
         }
         stage('Deploy to K8S cluster') {
             steps{
-                echo 'Deploy on Kubernetes cluster..'
+                    echo 'Deploy on Kubernetes cluster..'
+                    sh "chmod +x update_build_version.sh"
+                    sh "./update_build_version.sh $(env.BUILD_NUMBER) $(clusterDeployFile)"
                     sshagent(['KMaster']) {
                         sh "scp -o StrictHostKeyChecking=no docker_k8s_test_deployment.yaml ubuntu@172.31.6.178:/home/ubuntu/"
                         script {
@@ -62,17 +64,6 @@ pipeline {
                             }
                     }
                 }
-//                     kubernetesDeploy    configs: '/home/ubuntu/docker_k8s_test_deployment.yaml',
-//                                         kubeconfigId: 'K8SMaster',
-//                                         ssh: [sshCredentialsId: '*', sshServer: ''],
-//                                         textCredentials: [certificateAuthorityData: '', clientCertificateData: '', clientKeyData: '', serverUrl: 'https://']
-//
-//                     withCredentials([kubeconfigContent( configs: '/home/ubuntu/docker_k8s_test_deployment.yaml',
-//                                                         credentialsId: clusterCredentials)]) {
-//                         sh '''echo "$KUBECONFIG_CONTENT" > kubeconfig && cat kubeconfig && rm kubeconfig'''
-//
-//                     }
-
             }
         }
    }
