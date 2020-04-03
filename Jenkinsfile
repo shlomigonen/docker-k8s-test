@@ -52,7 +52,7 @@ pipeline {
         stage('Deploy to K8S cluster') {
             steps{
                 echo 'Deploy on Kubernetes cluster..'
-                    sshagent([clusterCredentials]) {
+                    sshagent(['KMaster']) {
                     sh "scp -o StrictHostKeyChecking=no docker_k8s_test_deployment.yaml ubuntu@172.31.6.178"
                     script {
                         try {
