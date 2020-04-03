@@ -36,5 +36,6 @@ spec:
       containers:
         - name: docker-k8s-test
           image: shlomigonen/docker_k8s_test_container:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 8080
