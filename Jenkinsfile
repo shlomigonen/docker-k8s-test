@@ -55,7 +55,7 @@ pipeline {
                     // enable execution mode on the script file
                     sh "chmod +x update_build_version.sh"
                     // enable write on the deployment file
-                    sh "chmod a+w docker_k8s_test_deployment.yaml"
+                    // sh "chmod a+w docker_k8s_test_deployment.yaml"
 //                    sh "./update_build_version.sh ${env.BUILD_NUMBER} ${clusterDeployFile}"
                     sh "./update_build_version.sh ${env.BUILD_NUMBER}"
                     sshagent(['KMaster']) {
