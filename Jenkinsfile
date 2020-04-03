@@ -60,7 +60,7 @@ pipeline {
 //                         } catch(error){
 //                             sh "ssh ubuntu@172.31.6.178 sudo kubectl create -f docker_k8s_test_deployment.yaml"
 //                         }
-                    }
+//                    }
                 }
 //                     kubernetesDeploy    configs: '/home/ubuntu/docker_k8s_test_deployment.yaml',
 //                                         kubeconfigId: 'K8SMaster',
