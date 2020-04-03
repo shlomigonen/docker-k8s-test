@@ -53,7 +53,7 @@ pipeline {
             steps{
                     echo 'Deploy on Kubernetes cluster..'
                     sh "chmod +x update_build_version.sh"
-                    sh "./update_build_version.sh $(env.BUILD_NUMBER) $(clusterDeployFile)"
+                    sh "./update_build_version.sh ${env.BUILD_NUMBER} ${clusterDeployFile}"
                     sshagent(['KMaster']) {
                         sh "scp -o StrictHostKeyChecking=no docker_k8s_test_deployment.yaml ubuntu@172.31.6.178:/home/ubuntu/"
                         script {
