@@ -7,6 +7,7 @@ pipeline {
     repositoryCredentials = 'Github'
     clusterCredentials = 'KMaster'
     clusterDeployFile = "docker_k8s_test_deployment.yaml"
+    k8sMasterAddress = "ubuntu@172.31.6.178"
     }
 
     agent any
@@ -55,14 +56,14 @@ pipeline {
                     // enable execution mode on the script file
                     sh "chmod +x update_build_version.sh"
                     sh "./update_build_version.sh ${env.BUILD_NUMBER} ${clusterDeployFile}"
-//                    sh "./update_build_version.sh ${env.BUILD_NUMBER}"
+
                     sshagent(['KMaster']) {
-                        sh "scp -o StrictHostKeyChecking=no docker_k8s_test_deployment.yaml ubuntu@172.31.6.178:/home/ubuntu/"
+                        sh "scp -o StrictHostKeyChecking=no ${clusterDeployFile} ${k8sMasterAddress}:/home/ubuntu/"
                         script {
                             try {
-                                sh "ssh ubuntu@172.31.6.178 sudo kubectl apply -f docker_k8s_test_deployment.yaml"
+                                sh "ssh ${k8sMasterAddress} sudo kubectl apply -f ${clusterDeployFile}"
                             } catch(error){
-                                sh "ssh ubuntu@172.31.6.178 sudo kubectl create -f docker_k8s_test_deployment.yaml"
+                                sh "ssh ${k8sMasterAddress} sudo kubectl create -f ${clusterDeployFile}"
                             }
                     }
                 }
