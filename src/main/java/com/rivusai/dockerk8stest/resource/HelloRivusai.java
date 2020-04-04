@@ -11,7 +11,6 @@ public class HelloRivusai {
     @GetMapping
     public String hello () {
         return "Hello from Rivus.ai - your Streaming AI Platform \n" +
-                "(1) Orchestrating with Jenkins using Git, Maven and Docker using Pipeline" +
-                "(2) Testing";
+                "Now Orchestrating with Jenkins Pipeline and integrating with (1) Git (2) Maven (3) Docker (4) Kubernetes";
     }
 }
