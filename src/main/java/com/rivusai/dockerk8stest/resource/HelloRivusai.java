@@ -5,12 +5,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/rest/rivusai/hello")
+@RequestMapping("/home")
 public class HelloRivusai {
 
     @GetMapping
     public String hello () {
-        return "Hello from Rivus.ai - your Streaming AI Platform \n" +
-                "Now Orchestrating with Jenkins Pipeline and integrating with (1) Git (2) Maven (3) Docker (4) Kubernetes. Second Try!";
+        return "<!DOCTYPE html>\n" +
+                "<html>\n" +
+                "\t<head>\n" +
+                "\t\t<title>rives.ai</title>\n" +
+                "\t</head>\n" +
+                "\t<body>\n" +
+                "\t<p style=\"margin-bottom:300px;\"></p>\n" +
+                "\t\t<img src=\"/img/rivusai_logo.png\" width=\"500\" style=\"display:block; margin-left: auto; margin-right: auto;\" />\n" +
+                "\t</body>\n" +
+                "</html>";
     }
 }
