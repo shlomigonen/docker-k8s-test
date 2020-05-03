@@ -13,7 +13,7 @@ public class HelloRivusai {
         return "<!DOCTYPE html>\n" +
                 "<html>\n" +
                 "\t<head>\n" +
-                "\t\t<title>rives.ai</title>\n" +
+                "\t\t<title>rivus.ai</title>\n" +
                 "\t</head>\n" +
                 "\t<body>\n" +
                 "\t<p style=\"margin-bottom:300px;\"></p>\n" +
